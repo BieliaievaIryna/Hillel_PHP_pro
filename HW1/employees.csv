@@ -1,0 +1,6 @@
+#,id,last_name,first_name,patronymic,start_date,end_probation_date,contract_type,secure_approval
+1,1,Shevchenko,Andrii,Ivanovych,2022-05-18,2022-08-20,employee,1
+2,2,Tkachenko,Lidiia,Sergiivna,2020-03-02,2022-06-05,employee,1
+3,3,Shevchenko,Oleksandr,Mykolayovych,2023-11-10,2024-02-12,intern,0
+4,4,Kotyk,Andrii,Oleksandrovych,2023-11-10,2024-02-12,intern,0
+5,5,Zirka,Tetiana,Sergiivna,2020-08-07,2022-11-05,employee,1
