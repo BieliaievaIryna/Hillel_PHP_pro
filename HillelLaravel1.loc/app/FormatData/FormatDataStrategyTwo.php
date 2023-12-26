@@ -7,26 +7,29 @@ use App\FormatData\FormatInterface;
 
 class FormatDataStrategyTwo extends FormatData
 {
-    public function format(\stdClass $cars): array
+    public function format(array $objects): array
     {
         $result = '';
-        foreach ($cars as $key => $value) {
+        foreach ($objects as $object) {
+            $result .= $this->formatProperties($object, function ($key, $value) {
+                $words = [];
+                $word = "";
 
-            $words = [];
-            $word = "";
-
-            for ($i = 0; $i < strlen($key); $i++) {
-                if ($i > 0 && ctype_upper($key[$i])) {
-                    $words[] = strtolower($word);
-                    $word = "";
+                for ($i = 0; $i < strlen($key); $i++) {
+                    if ($i > 0 && ctype_upper($key[$i])) {
+                        $words[] = strtolower($word);
+                        $word = "";
+                    }
+                    $word .= $key[$i];
                 }
-                $word .= $key[$i];
-            }
-            $words[] = strtolower($word);
-            $newKey = implode(' ', $words);
-            $result .= "|$newKey|$value|\n";
+
+                $words[] = strtolower($word);
+                $newKey = implode(' ', $words);
+                return "|$newKey|$value|\n";
+            });
+            $result .= "_______\n";
         }
-        $result .= "_______\n";
-        return ['name' => __CLASS__ . '_' . $this->formatDate() . '.txt', 'text' => $result];
+
+        return $this->formatResult($result);
     }
 }

@@ -7,13 +7,15 @@ use App\FormatData\FormatInterface;
 
 class FormatDataStrategyOne extends FormatData
 {
-    public function format(\stdClass $cars): array
+    public function format(array $objects): array
     {
-        $result = "";
-        foreach ($cars as $key => $value) {
-            $result .= $key . " - " . $value . "\n";
+        $result = '';
+        foreach ($objects as $object) {
+            $result .= $this->formatProperties($object, function($key, $value) {
+                return $key . " - " . $value . "\n";
+            });
+            $result .= "_______\n";
         }
-        $result .= "_______\n";
-        return ['name' => __CLASS__ . '_' . $this->formatDate() . '.txt', 'text' => $result];
+        return $this->formatResult($result);
     }
 }

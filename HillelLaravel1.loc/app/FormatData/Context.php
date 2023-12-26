@@ -20,10 +20,6 @@ class Context
 
     public function executeStrategy(): array
     {
-        $results = [];
-        foreach ($this->objects as $object) {
-            $results[] = $this->strategy->format($object);
-        }
-        return $results;
+        return $this->strategy->format($this->objects);
     }
 }
