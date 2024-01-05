@@ -19,3 +19,5 @@ Route::get('/', function () {
 
 use App\Http\Controllers\ControllerFormat;
 Route::get('/cars', [ ControllerFormat::class, 'index' ]);
+
+Route::get('/homeWorkSolid', [App\Http\Controllers\HomeWorkSolidController::class, 'index']);
