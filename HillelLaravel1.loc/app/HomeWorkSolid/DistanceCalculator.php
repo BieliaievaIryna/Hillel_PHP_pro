@@ -2,14 +2,22 @@
 
 namespace App\HomeWorkSolid;
 
-class DistanceCalculator
+class DistanceCalculator implements DistanceCalculatorInterface
 {
-    public function calculateDistances(array $places, float $lat, float $lon): array
+    private float $lat;
+    private float $lon;
+
+    public function __construct(float $lat, float $lon)
     {
-        foreach ($places as $place){
-            $res = 2 * asin(sqrt(pow(sin(($lat - $place->lat) / 2), 2) + cos($lat) * cos($place->lat) * pow(sin(($lon - $place->lon) / 2), 2)));
-            $place->distance = $res;
+        $this->lat = $lat;
+        $this->lon = $lon;
+    }
+    public function calculateDistances(array $results, string $key, string $latKey, string $lonKey): array
+    {
+        foreach ($results as $result){
+            $res = 2 * asin(sqrt(pow(sin(($this->lat - $result->$latKey) / 2), 2) + cos($this->lat) * cos($result->$latKey) * pow(sin(($this->lon - $result->$lonKey) / 2), 2)));
+            $result->$key = $res;
         }
-        return $places;
+        return $results;
     }
 }

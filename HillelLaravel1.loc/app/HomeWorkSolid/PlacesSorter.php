@@ -2,13 +2,13 @@
 
 namespace App\HomeWorkSolid;
 
-class PlacesSorter
+class PlacesSorter implements PlacesSorterInterface
 {
-    public function sortByDistance(array $places): array
+    public function sortByCriteria(array $results, string $criteria): array
     {
-        usort($places, function($a, $b){
-            return ($a->distance < $b->distance) ? -1 : 1;
+        usort($results, function($a, $b) use ($criteria) {
+            return ($a->$criteria < $b->$criteria) ? -1 : 1;
         });
-        return $places;
+        return $results;
     }
 }

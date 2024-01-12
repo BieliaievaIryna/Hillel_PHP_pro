@@ -2,19 +2,24 @@
 
 namespace App\HomeWorkSolid;
 
-class PlacesFilter
+class PlacesFilter implements PlacesFilterInterface
 {
-    public function filterByProperties(array $places, array $properties): array
+    public function filterByProperties(array $results, array $filters, string $key): array
     {
-        foreach ($places as $key => $place){
-            foreach ($place as $prop => $val) {
-                if (!in_array($prop, $properties)){
-                    unset($place->$prop);
+        $filteredResults = [];
+
+        foreach ($results as $result) {
+            $filteredResult = [];
+
+            foreach ($result as $prop => $val) {
+                if (in_array($prop, $filters)) {
+                    $filteredResult[$prop] = $val;
                 }
             }
-            $places[$place->place_id] = $place;
-            unset($places[$key]);
+
+            $filteredResults[$filteredResult[$key]] = $filteredResult;
         }
-        return $places;
+
+        return $filteredResults;
     }
 }
