@@ -12,12 +12,8 @@ class DistanceCalculator implements DistanceCalculatorInterface
         $this->lat = $lat;
         $this->lon = $lon;
     }
-    public function calculateDistances(array $results, string $key, string $latKey, string $lonKey): array
+    public function calculateDistance(float $lat, float $lon): float
     {
-        foreach ($results as $result){
-            $res = 2 * asin(sqrt(pow(sin(($this->lat - $result->$latKey) / 2), 2) + cos($this->lat) * cos($result->$latKey) * pow(sin(($this->lon - $result->$lonKey) / 2), 2)));
-            $result->$key = $res;
-        }
-        return $results;
+        return 2 * asin(sqrt(pow(sin(($this->lat - $lat) / 2), 2) + cos($this->lat) * cos($lat) * pow(sin(($this->lon - $lon) / 2), 2)));
     }
 }

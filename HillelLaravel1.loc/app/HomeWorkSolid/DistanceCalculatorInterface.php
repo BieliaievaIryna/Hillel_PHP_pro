@@ -4,5 +4,5 @@ namespace App\HomeWorkSolid;
 
 interface DistanceCalculatorInterface
 {
-    public function calculateDistances(array $results, string $key, string $latKey, string $lonKey): array;
+    public function calculateDistance(float $lat, float $lon): float;
 }

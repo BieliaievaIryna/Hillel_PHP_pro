@@ -9,7 +9,7 @@ class PlacesFilter implements PlacesFilterInterface
         $filteredResults = [];
 
         foreach ($results as $result) {
-            $filteredResult = [];
+            $filteredResult = new \stdClass();
 
             foreach ($result as $prop => $val) {
                 if (in_array($prop, $filters)) {
@@ -17,7 +17,7 @@ class PlacesFilter implements PlacesFilterInterface
                 }
             }
 
-            $filteredResults[$filteredResult[$key]] = $filteredResult;
+            $filteredResults[$filteredResult->$key] = $filteredResult;
         }
 
         return $filteredResults;
