@@ -2,20 +2,20 @@
 
 namespace App\HomeWorkSolid;
 
-class ProcessPlacesClient
+class ProcessPlacesClient implements ProcessPlacesClientInterface
 {
-    private PlacesService $placesService;
-    private DistanceCalculator $distanceCalculator;
-    private PlacesSorter $placesSorter;
-    private PlacesFilter $placesFilter;
+    private PlacesServiceInterface $placesService;
+    private DistanceCalculatorInterface $distanceCalculator;
+    private PlacesSorterInterface $placesSorter;
+    private PlacesFilterInterface $placesFilter;
     private array $properties;
     private array $excludePlaceIds = [];
 
     public function __construct(
-        PlacesService $placesService,
-        DistanceCalculator $distanceCalculator,
-        PlacesSorter $placesSorter,
-        PlacesFilter $placesFilter,
+        PlacesServiceInterface $placesService,
+        DistanceCalculatorInterface $distanceCalculator,
+        PlacesSorterInterface $placesSorter,
+        PlacesFilterInterface $placesFilter,
     )
     {
         $this->placesService = $placesService;
@@ -45,7 +45,7 @@ class ProcessPlacesClient
         $filteredPlaces = $this->filterPlaces($sortedPlaces);
 
         // Add the place ids of the current results to the exclude list for the next call
-        $this->updateExcludeList($filteredPlaces);
+        $this->updateExcludeList($filteredPlaces, $search);
 
         return $filteredPlaces;
     }
@@ -74,9 +74,12 @@ class ProcessPlacesClient
         return $this->placesFilter->filterByProperties($places, $this->properties, $this->properties['place_id']);
     }
 
-    private function updateExcludeList(array $filteredPlaces): void
+    private function updateExcludeList(array $filteredPlaces, string $search): void
     {
+        /// Clear the excludePlaceIds when new places are found for the current search
+        $this->excludePlaceIds[$search] = [];
+
         // Add the place ids of the current results to the exclude list for the next call
-        $this->excludePlaceIds = array_merge($this->excludePlaceIds, array_keys($filteredPlaces));
+        $this->excludePlaceIds[$search] = array_merge($this->excludePlaceIds[$search], array_keys($filteredPlaces));
     }
 }

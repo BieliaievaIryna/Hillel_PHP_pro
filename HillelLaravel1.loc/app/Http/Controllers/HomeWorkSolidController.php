@@ -2,38 +2,32 @@
 
 namespace App\Http\Controllers;
 
-use App\HomeWorkSolid\DistanceCalculator;
-use App\HomeWorkSolid\ProcessPlacesClient;
-use App\HomeWorkSolid\PlacesFilter;
-use App\HomeWorkSolid\PlacesService;
-use App\HomeWorkSolid\PlacesSorter;
-use GuzzleHttp\Client as GuzzleClient;
+use App\HomeWorkSolid\ProcessPlacesClientInterface;
 use Illuminate\Http\Request;
 
 class HomeWorkSolidController extends Controller
 {
-    private ProcessPlacesClient $placesClient;
-    private float $lat = 46.4774700;
-    private float $lon = 30.7326200;
+    private ProcessPlacesClientInterface $placesClient;
 
-    public function __construct()
+    public function __construct(ProcessPlacesClientInterface $placesClient)
     {
-        $this->placesClient = new ProcessPlacesClient(
-            new PlacesService(new GuzzleClient()),
-            new DistanceCalculator($this->lat, $this->lon),
-            new PlacesSorter(),
-            new PlacesFilter(),
-        );
+        $this->placesClient = $placesClient;
     }
     public function index(Request $request)
     {
         $url = 'https://nominatim.openstreetmap.org/search.php?format=jsonv2&q=';
-        $search = 'Продукти Одеса';
+        $search = $request->input('search', 'Продукти Одеса');
 
         $places1 = $this->placesClient->searchAndProcessPlaces($url, $search);
-        dump($places1);
-
         $places2 = $this->placesClient->searchAndProcessPlaces($url, $search);
-        dd($places2);
+
+        $response = $places1 + $places2;
+
+        // Dump using dd()
+//        dd($response);
+
+        // Return the response in JSON format
+        return response()->json($response, 200, [], JSON_UNESCAPED_UNICODE);
+
     }
 }
