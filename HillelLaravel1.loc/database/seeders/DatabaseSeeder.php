@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,11 +13,30 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        DB::table('categories')->insert([
+            ['name' => 'Technology'],
+            ['name' => 'Travel'],
+            ['name' => 'Food'],
+        ]);
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        // Сідер для постів
+        DB::table('posts')->insert([
+            ['category_id' => 1, 'title' => 'Tech Post 1', 'content' => 'Content of Tech Post 1'],
+            ['category_id' => 1, 'title' => 'Tech Post 2', 'content' => 'Content of Tech Post 2'],
+            ['category_id' => 2, 'title' => 'Travel Post 1', 'content' => 'Content of Travel Post 1'],
+            ['category_id' => 3, 'title' => 'Food Post 1', 'content' => 'Content of Food Post 1'],
+        ]);
+
+        // Сідер для коментарів
+        DB::table('comments')->insert([
+            ['post_id' => 1, 'comment' => 'Comment on Tech Post 1'],
+            ['post_id' => 2, 'comment' => 'Comment on Tech Post 2'],
+            ['post_id' => 3, 'comment' => 'Comment on Travel Post 1'],
+            ['post_id' => 4, 'comment' => 'Comment on Food Post 1'],
+            ['post_id' => 1, 'comment' => 'Comment on Tech Post 1'],
+            ['post_id' => 2, 'comment' => 'Comment on Tech Post 2'],
+            ['post_id' => 3, 'comment' => 'Comment on Travel Post 1'],
+            ['post_id' => 4, 'comment' => 'Comment on Food Post 1'],
+        ]);
     }
 }
