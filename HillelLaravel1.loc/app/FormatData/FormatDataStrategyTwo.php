@@ -7,29 +7,21 @@ use App\FormatData\FormatInterface;
 
 class FormatDataStrategyTwo extends FormatData
 {
-    public function format(array $objects): array
+    protected function formatProperty(string $key, mixed $value): string
     {
-        $result = '';
-        foreach ($objects as $object) {
-            $result .= $this->formatProperties($object, function ($key, $value) {
-                $words = [];
-                $word = "";
+        $words = [];
+        $word = "";
 
-                for ($i = 0; $i < strlen($key); $i++) {
-                    if ($i > 0 && ctype_upper($key[$i])) {
-                        $words[] = strtolower($word);
-                        $word = "";
-                    }
-                    $word .= $key[$i];
-                }
-
+        for ($i = 0; $i < strlen($key); $i++) {
+            if ($i > 0 && ctype_upper($key[$i])) {
                 $words[] = strtolower($word);
-                $newKey = implode(' ', $words);
-                return "|$newKey|$value|\n";
-            });
-            $result .= "_______\n";
+                $word = "";
+            }
+            $word .= $key[$i];
         }
 
-        return $this->formatResult($result);
+        $words[] = strtolower($word);
+        $newKey = implode(' ', $words);
+        return "|$newKey|$value|\n";
     }
 }

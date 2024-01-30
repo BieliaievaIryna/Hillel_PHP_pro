@@ -5,12 +5,12 @@ namespace App\FormatData;
 class Context
 {
     private FormatInterface $strategy;
-    private array $objects;
+    private array $collection = [];
 
-    public function __construct(FormatInterface $strategy, array $objects)
+    public function __construct(FormatInterface $strategy, array $collection = [])
     {
         $this->setStrategy($strategy);
-        $this->objects = $objects;
+        $this->setCollection($collection);
     }
 
     public function setStrategy(FormatInterface $strategy): void
@@ -18,8 +18,20 @@ class Context
         $this->strategy = $strategy;
     }
 
+    public function setCollection(array $collection): void
+    {
+        $this->collection = $collection;
+    }
+
     public function executeStrategy(): array
     {
-        return $this->strategy->format($this->objects);
+        $formattedResult = $this->strategy->format($this->collection);
+
+        $className = pathinfo(str_replace('\\', '/', get_class($this->strategy)), PATHINFO_BASENAME);
+
+        return [
+            'name' => $className . '_' . $this->strategy->formatDate() . '.txt',
+            'text' => $formattedResult,
+        ];
     }
 }

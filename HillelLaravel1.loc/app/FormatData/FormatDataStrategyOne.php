@@ -7,15 +7,8 @@ use App\FormatData\FormatInterface;
 
 class FormatDataStrategyOne extends FormatData
 {
-    public function format(array $objects): array
+    protected function formatProperty(string $key, mixed $value): string
     {
-        $result = '';
-        foreach ($objects as $object) {
-            $result .= $this->formatProperties($object, function($key, $value) {
-                return $key . " - " . $value . "\n";
-            });
-            $result .= "_______\n";
-        }
-        return $this->formatResult($result);
+        return $key . " - " . $value . "\n";
     }
 }

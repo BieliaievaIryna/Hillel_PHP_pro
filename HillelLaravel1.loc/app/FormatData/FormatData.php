@@ -6,22 +6,23 @@ use App\FormatData\FormatInterface;
 
 abstract class FormatData implements FormatInterface
 {
-    protected function formatDate(): string
+    public function formatDate(): string
     {
         return date('Y_m_d');
     }
 
-    protected function formatProperties(\stdClass $objects, callable $formatFunction): string
+    abstract protected function formatProperty(string $key, mixed $value): string;
+
+    public function format(array $objects): string
     {
         $result = '';
-        foreach ($objects as $key => $value) {
-            $result .= $formatFunction($key, $value);
+        foreach ($objects as $object) {
+            foreach ($object as $key => $value) {
+                $result .= $this->formatProperty($key, $value);
+            }
+            $result .= "_______\n";
         }
-        return $result;
-    }
 
-    protected function formatResult(string $result): array
-    {
-        return ['name' => __CLASS__ . '_' . $this->formatDate() . '.txt', 'text' => $result];
+        return $result;
     }
 }
