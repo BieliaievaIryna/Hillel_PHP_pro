@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\ShortUrl\ShortUrlServiceInterface;
 use Illuminate\Http\Request;
-use App\Models\ShortUrl;
+use Illuminate\Support\Facades\Validator;
 
 
 class ShortUrlController extends Controller
@@ -17,11 +17,20 @@ class ShortUrlController extends Controller
     }
     public function shorten(Request $request)
     {
-        $url = $request->input('url');
-        $shortenedUrl = $this->shortUrlService->shortenUrl($url);
+        $validator = Validator::make($request->all(), [
+            'url' => 'required|url',
+        ]);
 
-        if (!$shortenedUrl) {
-            return response()->json(['error' => 'Failed to create short URL'], 500);
+        if ($validator->fails()) {
+            return response()->json(['error' => 'Invalid URL'], 400);
+        }
+
+        $url = $request->input('url');
+
+        try {
+            $shortenedUrl = $this->shortUrlService->shortenUrl($url);
+        } catch (\RuntimeException $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         return response()->json(['url' => route('redirect', ['code' => $shortenedUrl])], 200, [], JSON_UNESCAPED_SLASHES);
@@ -29,12 +38,11 @@ class ShortUrlController extends Controller
 
     public function redirect($code)
     {
-        $shortUrl = ShortUrl::where('code', $code)->first();
-
-        if (!$shortUrl) {
+        try {
+            $url = $this->shortUrlService->findUrlByCode($code);
+            return redirect($url);
+        } catch (\Exception $e) {
             abort(404);
         }
-
-        return redirect($shortUrl->url);
     }
 }
