@@ -12,7 +12,7 @@ class BlogPostController extends Controller
     {
         // ORM
         $postOrm = Post::find($postId);
-        $postOrm->comment->all();
+        $postOrm->comments->all();
         dump($postOrm);
 
         // Query Builder

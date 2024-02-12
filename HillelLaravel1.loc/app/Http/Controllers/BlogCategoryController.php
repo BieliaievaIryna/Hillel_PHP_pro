@@ -12,7 +12,7 @@ class BlogCategoryController extends Controller
     {
         // ORM
         $categoryOrm = Category::find($categoryId);
-        $categoryOrm->post->all();
+        $categoryOrm->posts->all();
         dump($categoryOrm);
 
         // Query Builder

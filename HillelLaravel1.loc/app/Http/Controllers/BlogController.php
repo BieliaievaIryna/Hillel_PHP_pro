@@ -17,4 +17,20 @@ class BlogController extends Controller
         $categories = DB::table('categories')->get();
         dump($categories);
     }
+
+    public function getBlogWithComments()
+    {
+        //for only one category
+        $category = Category::find(1);
+        $comments = $category->comments;
+        dump($comments);
+
+        //for all categories
+        $categories = Category::with('comments')->get();
+
+        foreach ($categories as $category) {
+            dump($category->name);
+            dump($category->comments);
+        }
+    }
 }
