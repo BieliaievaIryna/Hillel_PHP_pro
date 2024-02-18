@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\ShortUrl\ShortUrlServiceInterface;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-
 
 class ShortUrlController extends Controller
 {
@@ -17,17 +15,8 @@ class ShortUrlController extends Controller
     }
     public function shorten(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'url' => 'required|url',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['error' => 'Invalid URL'], 400);
-        }
-
-        $url = $request->input('url');
-
         try {
+            $url = $request->input('url');
             $shortenedUrl = $this->shortUrlService->shortenUrl($url);
         } catch (\RuntimeException $e) {
             return response()->json(['error' => $e->getMessage()], 500);

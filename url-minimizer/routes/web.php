@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ShortUrlController;
+use App\Http\Middleware\ValidateUrl;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,6 +19,6 @@ use Illuminate\Support\Facades\Route;
 //    return view('welcome');
 //});
 
-Route::get('/shorten', [ShortUrlController::class, 'shorten']);
+Route::get('/shorten', [ShortUrlController::class, 'shorten'])->middleware([ValidateUrl::class]);
 Route::get('/{code}', [ShortUrlController::class, 'redirect'])->name('redirect');
 
