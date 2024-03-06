@@ -24,12 +24,16 @@ Route::get('/', function () {
 
 Route::get('/blog', [App\Http\Controllers\BlogController::class, 'getBlog']);
 
-Route::get('/blog/{categoryId}', [App\Http\Controllers\BlogCategoryController::class, 'getCategories']);
+Route::get('/blogWithComments', [App\Http\Controllers\BlogController::class, 'getBlogWithComments']);
+
+Route::get('/blog/addCategory', [App\Http\Controllers\BlogCategoryController::class, 'addCategory']);
+
+Route::get('/blog/updatePost', [App\Http\Controllers\BlogPostController::class, 'updatePost']);
+
+Route::get('/blog/deleteComment', [App\Http\Controllers\BlogCommentController::class, 'deleteComment']);
+
+Route::get('/blog/addComment', [App\Http\Controllers\BlogController::class, 'addCommentAndUpdateTimestamp']);
 
 Route::get('/blog/{categoryId}/{postId}', [App\Http\Controllers\BlogPostController::class, 'getPosts']);
-//
-Route::get('/blog/addCategory', [App\Http\Controllers\BlogCategoryController::class, 'addCategory']);
-//
-Route::get('/blog/updatePost', [App\Http\Controllers\BlogPostController::class, 'updatePost']);
-//
-Route::get('/blog/deleteComment', [App\Http\Controllers\BlogCommentController::class, 'deleteComment']);
+
+Route::get('/blog/{categoryId}', [App\Http\Controllers\BlogCategoryController::class, 'getCategories']);
