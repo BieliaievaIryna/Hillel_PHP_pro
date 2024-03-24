@@ -24,6 +24,8 @@ Route::get('/', function () {
 
 Route::get('/blog', [App\Http\Controllers\BlogController::class, 'getBlog']);
 
+Route::get('/blogs', [App\Http\Controllers\BlogCommentController::class, 'getPostAndLatestComments']);
+
 Route::get('/blogWithComments', [App\Http\Controllers\BlogController::class, 'getBlogWithComments']);
 
 Route::get('/blog/addCategory', [App\Http\Controllers\BlogCategoryController::class, 'addCategory']);
