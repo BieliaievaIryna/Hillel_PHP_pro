@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use MongoDB\Laravel\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('short_urls', function (Blueprint $table) {
-            $table->id();
-            $table->string('url');
-            $table->string('code')->unique();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+        Schema::create('short_urls', function (Blueprint $collections) {
+            $collections->id();
+            $collections->string('code')->unique();
         });
     }
 
